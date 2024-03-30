@@ -1,6 +1,5 @@
 # TypeScript E-Commerce Website
 
-
 This is a simple e-commerce website developed using TypeScript, Express, Mongoose, and MongoDB Cloud as database .
 
 ## Features
@@ -8,10 +7,10 @@ This is a simple e-commerce website developed using TypeScript, Express, Mongoos
 - Fetches product data from MongoDB Cloud database
 - Displays all available products
 
-
 ## Tech Stack
 
 - **Frontend:**
+
   - Express
   - TypeScript
 
@@ -27,8 +26,4 @@ This is a simple e-commerce website developed using TypeScript, Express, Mongoos
 
 ## Deployment
 
-The website is already deployed and can be accessed here: [Live Demo]()
-
-
-
-
+The website is already deployed and can be accessed here: [Live Demo]("https://ecom-backend-9pyi.onrender.com")

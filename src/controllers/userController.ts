@@ -45,8 +45,12 @@ export const addNewUser = async (
       { userId: newUser._id },
       process.env.JWT_SECRET || " "
     );
+    const tenDays = 10 * 24 * 60 * 60 * 1000;
     const mode: boolean = process.env.NODE_ENV === "production";
-    res.cookie("ecommerce_token", token, { secure: mode });
+    res.cookie("ecommerce_token", token, {
+      secure: mode,
+      expires: new Date(Date.now() + tenDays),
+    });
     res.status(201).json({
       success: true,
       message: "User created Successfully !",
@@ -76,7 +80,12 @@ export const loginUser = async (
     const { password: userPassword, ...userDetailsWithoutPassword } = user;
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET || " ");
     if (!token) return next(new errorHandler(500, "Token generation failed !"));
-    res.cookie("ecommerce_token", token);
+    const tenDays = 10 * 24 * 60 * 60 * 1000;
+    const mode: boolean = process.env.NODE_ENV === "production";
+    res.cookie("ecommerce_token", token, {
+      secure: mode,
+      expires: new Date(Date.now() + tenDays),
+    });
     res.status(200).json({
       success: true,
       message: "User Login Successfull !",

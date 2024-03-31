@@ -18,14 +18,34 @@ export const addNewProduct = async (
       response: newProduct,
     });
   } catch (error) {
-    res
-      .status(500)
+    res.status(500).json({
+      success: false,
+      message:
+        error instanceof Error ? error.message : "Error Creating new product !",
+    });
+  }
+};
+export const getAllProducts = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const products = await productModel.find({});
+    if (products.length == 0)
+      return next(new errorHandler(404, "Product Not Available !"));
+    return res
+      .status(200)
       .json({
-        success: false,
-        message:
-          error instanceof Error
-            ? error.message
-            : "Error Creating new product !",
+        success: true,
+        message: "Products Loaded Successfully !",
+        response: products,
       });
+  } catch (error) {
+    return res.status(500).json({
+      success: "fail",
+      message:
+        error instanceof Error ? error.message : " Product Fetching Failed !",
+    });
   }
 };

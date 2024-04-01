@@ -31,6 +31,7 @@ This is a simple e-commerce website developed using TypeScript, Express, Mongoos
 ## Getting Started
 
 1. Clone this repository.
-2. Install dependencies using `npm install`.
-3. Run the project locally with `npm run watch`.
-4. Run the project locally with `npm run dev`.
+2. cd/Ecommerce-Backend.
+3. Install dependencies using `npm install`.
+4. Run the project locally with `npm run watch`.
+5. Run the project locally with `npm run dev`.

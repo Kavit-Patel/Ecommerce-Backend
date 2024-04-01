@@ -9,9 +9,20 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 
 const app = express();
+const allowedOrigins = process.env.CORS_URL
+  ? process.env.CORS_URL.split(",")
+  : [];
 app.use(
   cors({
-    origin: process.env.CORS_URL,
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.indexOf(origin) === -1) {
+        return callback(
+          new Error(`Cors Policy doesn't allow ${origin}  !`),
+          false
+        );
+      }
+      return callback(null, true);
+    },
     credentials: true,
   })
 );

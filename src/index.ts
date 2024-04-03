@@ -9,6 +9,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 
 const app = express();
+config();
 const allowedOrigins = process.env.CORS_URL
   ? process.env.CORS_URL.split(",")
   : [];

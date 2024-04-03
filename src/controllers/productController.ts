@@ -52,3 +52,31 @@ export const getAllProducts = async (
     });
   }
 };
+
+export const getSingleProduct = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params;
+    if (!id) return next(new errorHandler(403, "Provide Product id !"));
+    const product = await productModel.findById(id);
+    if (!product) return next(new errorHandler(404, "Product Not Found !"));
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: "Product Found Successfully",
+        response: product,
+      });
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        success: false,
+        message:
+          error instanceof Error ? error.message : "Product Fetching Failed !",
+      });
+  }
+};

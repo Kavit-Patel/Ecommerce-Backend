@@ -2,8 +2,9 @@
 
 ## Deployment
 
-- FRONT_END of this website is already deployed and can be accessed here: [Live Demo]("https://ecommerce-front-end-vanilla-js.vercel.app")
-- BACK_END website is deployed and can be accessed here: [Live Demo]("https://ecom-backend-9pyi.onrender.com")
+- React-Typescript-FRONT_END of this website is deployed at https://ecommerce-react-tau-ten.vercel.app
+- Vanilla-JS-FRONT_END of this website is deployed at https://ecommerce-front-end-vanilla-js.vercel.app
+- BACK_END website is deployed and can be accessed here: https://ecom-backend-9pyi.onrender.com
 
 This is a simple e-commerce website developed using TypeScript, Express, Mongoose, and MongoDB Cloud as database .
 

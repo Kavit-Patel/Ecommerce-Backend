@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
 
 export interface userType {
+  _id: string;
   name: string;
+  surname: string;
   email: string;
   password: string;
   isAdmin: boolean;
@@ -9,6 +11,7 @@ export interface userType {
 
 const userSchema = new mongoose.Schema({
   name: { type: String },
+  surname: { type: String },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   isAdmin: { type: Boolean, default: false },

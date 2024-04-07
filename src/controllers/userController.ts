@@ -32,12 +32,13 @@ export const addNewUser = async (
   next: NextFunction
 ) => {
   try {
-    const { name, email, password } = req.body;
-    if (!name || !email || !password)
+    const { name, surname, email, password } = req.body;
+    if (!name || !surname || !email || !password)
       next(new errorHandler(403, "Please Fill all user details !"));
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await userModel.create({
       name,
+      surname,
       email,
       password: hashedPassword,
     });
@@ -49,6 +50,8 @@ export const addNewUser = async (
     const mode: boolean = process.env.NODE_ENV === "production";
     res.cookie("ecommerce_token", token, {
       secure: mode,
+      httpOnly: true,
+      sameSite: "none",
       expires: new Date(Date.now() + tenDays),
     });
     res.status(201).json({
@@ -84,6 +87,8 @@ export const loginUser = async (
     const mode: boolean = process.env.NODE_ENV === "production";
     res.cookie("ecommerce_token", token, {
       secure: mode,
+      httpOnly: true,
+      sameSite: "none",
       expires: new Date(Date.now() + tenDays),
     });
     res.status(200).json({

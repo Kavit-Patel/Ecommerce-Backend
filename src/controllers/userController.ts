@@ -47,11 +47,10 @@ export const addNewUser = async (
       process.env.JWT_SECRET || " "
     );
     const tenDays = 10 * 24 * 60 * 60 * 1000;
-    const mode: boolean = process.env.NODE_ENV === "production";
     res.cookie("ecommerce_token", token, {
-      secure: mode,
+      sameSite: "lax",
+      secure: true,
       httpOnly: true,
-      // sameSite: "none",
       expires: new Date(Date.now() + tenDays),
     });
     res.status(201).json({

@@ -138,7 +138,7 @@ export const syncCartWithLs = async (
   next: NextFunction
 ) => {
   try {
-    const cartData: { product: string; quantity: number }[] = req.body;
+    const cartData: cartType[] = req.body;
     const { userId } = req.params;
     if (!userId)
       return next(new errorHandler(403, "Please login to save cart !"));
@@ -152,12 +152,7 @@ export const syncCartWithLs = async (
         new errorHandler(403, "Please Send Cart Data with products !")
       );
     cartData.forEach((element) => {
-      if (
-        !element.product ||
-        !element.quantity ||
-        typeof element.product !== "string" ||
-        typeof element.quantity !== "number"
-      ) {
+      if (!element.product || !element.quantity) {
         return next(
           new errorHandler(
             403,
@@ -169,19 +164,25 @@ export const syncCartWithLs = async (
     const newCartItemsPromisis = cartData.map((data) =>
       cartModel.create({
         user: userId,
-        product: data.product,
+        product: data.product._id,
         quantity: data.quantity,
       })
     );
     const newCart = await Promise.all(newCartItemsPromisis);
-    if (!newCart || newCart.length === 0)
+    const newCartWithFullProductPromises = newCart.map((item) => {
+      return cartModel.findOne({ _id: { $in: item._id } }).populate("product");
+    });
+    const newCartWithFullProduct = await Promise.all(
+      newCartWithFullProductPromises
+    );
+    if (!newCartWithFullProduct || newCartWithFullProduct.length === 0)
       return next(
-        new errorHandler(500, "Cart items were not added successfully !")
+        new errorHandler(500, "Cart items were NOT SYNCED successfully !")
       );
     res.status(200).json({
       success: true,
       message: "Cart Products Synced with Db Successfully !",
-      response: newCart,
+      response: newCartWithFullProduct, //Synced product/products array sent in response
     });
   } catch (error) {
     res.status(500).json({
@@ -201,11 +202,13 @@ export const getUserCart = async (
     if (!userId)
       return next(new errorHandler(403, "Login to access your cart !"));
     const cart = await cartModel.find({ user: userId }).populate("product");
-    if (cart.length === 0)
-      return next(new errorHandler(404, "Your Cart Is Empty"));
+
     res.status(200).json({
       success: true,
-      message: "Cart Fetched Success !",
+      message:
+        cart.length === 0
+          ? "Cart Fetched Success but EMPTY !"
+          : "Cart Fetched Success !",
       response: cart,
     });
   } catch (error) {
@@ -222,7 +225,7 @@ export const syncQuantityWithLs = async (
   next: NextFunction
 ) => {
   try {
-    const cartData: { _id: string; quantity: number }[] = req.body;
+    const cartData: cartType[] = req.body;
     const { userId } = req.params;
     if (!userId)
       return next(new errorHandler(403, "Please login to save cart !"));
@@ -236,12 +239,7 @@ export const syncQuantityWithLs = async (
         new errorHandler(403, "Please Send Cart Data with products !")
       );
     cartData.forEach((element) => {
-      if (
-        !element._id ||
-        !element.quantity ||
-        typeof element._id !== "string" ||
-        typeof element.quantity !== "number"
-      ) {
+      if (!element._id || !element.quantity) {
         return next(
           new errorHandler(
             403,
@@ -255,12 +253,19 @@ export const syncQuantityWithLs = async (
       cartModel.findByIdAndUpdate(item._id, { quantity: item.quantity })
     );
     const updatedCart = await Promise.all(newCartItemsPromisis);
-    if (!updatedCart || updatedCart.length === 0)
+
+    const updatedCartWithProductsPromises = updatedCart.map((item) => {
+      return cartModel.findOne({ _id: { $in: item?._id } });
+    });
+    const updatedcartWithProducts = await Promise.all(
+      updatedCartWithProductsPromises
+    );
+    if (!updatedcartWithProducts || updatedcartWithProducts.length === 0)
       return next(new errorHandler(500, "No Quantity Updation in Db Cart !"));
     res.status(200).json({
       success: true,
       message: "Cart Quantity has been Synced with Db !",
-      response: updatedCart,
+      response: updatedcartWithProducts,
     });
   } catch (error) {
     res.status(500).json({

@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 export interface productType {
+  _id?: string;
   name: string;
   price: number;
   image: string;

@@ -8,6 +8,7 @@ import userRouter from "./routes/userRoute";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import cartRouter from "./routes/cartRoute";
+import addressRouter from "./routes/addressRoute";
 
 const app = express();
 config();
@@ -39,6 +40,7 @@ ConnectDB(DB_URL);
 app.use("/api", userRouter);
 app.use("/api", productRouter);
 app.use("/api", cartRouter);
+app.use("/api", addressRouter);
 
 app.use(errorMiddleware);
 app.listen(PORT || 4000, () => console.log(`Express running on ${PORT}`));

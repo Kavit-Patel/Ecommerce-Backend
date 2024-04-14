@@ -19,4 +19,7 @@ const addressSchema = new mongoose.Schema({
   country: { type: String, required: true },
 });
 
-export const addressModel = mongoose.model("address", addressSchema);
+export const addressModel = mongoose.model<addressType>(
+  "Addresses",
+  addressSchema
+);

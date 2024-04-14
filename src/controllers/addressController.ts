@@ -43,23 +43,6 @@ export const addNewAddress = async (
   }
 };
 
-// export const syncQuantityWithLs = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   try {
-//   } catch (error) {
-//     res
-//       .status(500)
-//       .json({
-//         success: false,
-//         message:
-//           error instanceof Error ? error.message : "Internal Server Error",
-//       });
-//   }
-// };
-
 export const fetchUserAddress = async (
   req: Request,
   res: Response,

@@ -3,6 +3,7 @@ import { userType } from "./userModel";
 import { orderType } from "./orderModel";
 
 export interface paymentType {
+  _id?: string;
   user: mongoose.Types.ObjectId | userType;
   order: mongoose.Types.ObjectId | orderType;
   amount: number;

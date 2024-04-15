@@ -48,7 +48,7 @@ export const addNewUser = async (
     );
     const tenDays = 10 * 24 * 60 * 60 * 1000;
     res.cookie("ecommerce_token", token, {
-      sameSite: "lax",
+      sameSite: "none",
       secure: true,
       httpOnly: true,
       expires: new Date(Date.now() + tenDays),
@@ -85,9 +85,9 @@ export const loginUser = async (
     const tenDays = 10 * 24 * 60 * 60 * 1000;
     const mode: boolean = process.env.NODE_ENV === "production";
     res.cookie("ecommerce_token", token, {
-      secure: mode,
+      secure: true,
       httpOnly: true,
-      // sameSite: "none",
+      sameSite: "none",
       expires: new Date(Date.now() + tenDays),
     });
     res.status(200).json({

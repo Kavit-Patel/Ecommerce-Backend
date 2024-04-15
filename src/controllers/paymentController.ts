@@ -73,7 +73,7 @@ export const paymentSuccessed = async (
 ) => {
   try {
     const { userId, paymentId } = req.params;
-    const { payMode } = req.body;
+    const { payMode, orderId } = req.body;
     if (!userId)
       return next(new errorHandler(403, "Please login to save address !"));
     const userValidation = await userModel.findById(userId);
@@ -82,15 +82,6 @@ export const paymentSuccessed = async (
         new errorHandler(403, "User is invalid ! Create an Account First !")
       );
 
-    // if (!id)
-    //   return next(new errorHandler(403, "Payment id doesn't generated !"));
-    // if (!orderId)
-    //   return next(new errorHandler(403, "Please login to save address !"));
-    // const orderValidation = await orderModel.findById(orderId);
-    // if (!orderValidation)
-    //   return next(
-    //     new errorHandler(403, "Order is invalid ! Create an Order First !")
-    //   );
     if (!payMode || !paymentId)
       return next(new errorHandler(403, "Provide all payment details !"));
     const newPayment = await paymentModel.findByIdAndUpdate(paymentId, {
@@ -98,9 +89,16 @@ export const paymentSuccessed = async (
     });
     if (!newPayment)
       return next(new errorHandler(500, "Payment Doesn't created !"));
+    // updating order status as payment done and assign paymentId to that order
+    const updateOrderStatus = await orderModel.findByIdAndUpdate(orderId, {
+      payment: { payId: paymentId, paymentStatus: "Done" },
+    });
+
     res.status(201).json({
       success: true,
-      message: "Payment Done Successfully !",
+      message: updateOrderStatus
+        ? "Payment Done and Order updated Successfully"
+        : "Payment Done Successfully !",
       response: newPayment,
     });
   } catch (error) {

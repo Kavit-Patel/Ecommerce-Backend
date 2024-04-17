@@ -110,9 +110,13 @@ export const cookieAutoLogin = async (
 ) => {
   try {
     const user = await cookieUser(req, res, next);
+    if (!user)
+      return next(
+        new errorHandler(500, "User Couldn't login Through cookie !")
+      );
     res.status(200).json({
       success: true,
-      message: "User Login Successfull !",
+      message: "User Auto-Login Successfull !",
       response: user,
     });
   } catch (error) {

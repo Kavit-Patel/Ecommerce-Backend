@@ -69,7 +69,7 @@ export const addNewOrder = async (
     const removedCartArray = await Promise.all(removeCartPromises);
     res.status(201).json({
       success: true,
-      message: "Order Created Successfully !",
+      message: "Order Created Successfully and Cart Emptied !",
       response: { newOrderWithProductsDetail, removedCartArray },
     });
   } catch (error) {

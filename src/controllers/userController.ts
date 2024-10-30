@@ -135,7 +135,18 @@ export const logOutUser = async (
   try {
     return res
       .status(200)
-      .cookie("ecommerce_token", "", { sameSite: "none", expires: new Date(0) })
+      .cookie("ecommerce_token", "LogOut_Token", {
+        sameSite: "none",
+        secure: true,
+        httpOnly: true,
+        expires: new Date(36000000),
+      })
+      .cookie("ecommerce_token", "", {
+        sameSite: "none",
+        secure: true,
+        httpOnly: true,
+        expires: new Date(0),
+      })
       .json({ success: true, message: "Logout successfull !" });
   } catch (error) {
     res.status(500).json({
